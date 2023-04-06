@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
+  const [SearchName, setSearchName] = useState("");
+
+  const handleSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchName(event.target.value);
+  }
+
+  function searchName() {
     axios({
       method: "post",
-      url: "/Game/ChampionRotation",
+      url: "/Game/NameToUserData",
+      params: {
+        name: SearchName
+      }
     })
-    .then(res => res.data)
-    .then(data => console.log(data))
+  }
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: "/Test/Test"
+    })
+    .then(res => {
+      console.log(res.data)
+    })
+    
+    
+    
   }, []);
   
 
   return (
     <div>
-      <h1>Test</h1>
+      <input type="text" value={SearchName} onChange={handleSearchNameChange}/>
+      <button onClick={searchName}>Search</button>
     </div>
   );
 }
